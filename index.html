@@ -30,19 +30,83 @@
 			<div class="slides">
 				<section data-background="#ffffff">
 					<h1><img id="logo" src="img/stencil-logo.svg" /></h1>
-					<h4 id="lead-text">A simple compiler for fast,<br />reactive Web Components</h4>
-					<h5><a href="http://stenciljs.com/">stenciljs.com</a></h5>
+          <h4 id="lead-text">Framework agnostic web components with Stencil</h4>
+          
+          <br>
+          <p> <small>Nicolai Davies</small></p>
 				</section>
 				<section>
 					<h2>Outline</h2>
 					<ul>
-						<li>Introduction to Web Components</li>
+						<li>Origin of web components</li>
 						<li>Introduction to Stencil</li>
-						<li>Stencil API</li>
-						<li>Demo time</li>
-						<li>Where to go next</li>
+						<li>Stencil API/Syntax</li>
+						<li>Consuming stencil components</li>
+						<li>BuildingConect</li>
+            <li>GiC</li>
+            <li>DSM</li>
 					</ul>
 				</section>
+
+
+				<!-- Origin of web components -->
+				<section>
+					<h2>Why do we need web components?</h2>
+
+					<pre><code data-trim data-noescape class="html">
+						&lt;div class="menu"&gt;
+							&lt;div class="menu-item"&gt;Item 1&lt;/div&gt;
+							&lt;div class="menu-item"&gt;Item 2&lt;/div&gt;
+							&lt;div class="menu-item"&gt;Item 3&lt;/div&gt;
+							&lt;div class="menu-item"&gt;Item 4&lt;/div&gt;
+						&lt;/div&gt;
+					</code></pre>
+
+					<pre><code data-trim data-noescape class="javascript">
+						document.querySelector('menu-item').addEventListener('click', function() {
+							...
+						})
+					</code></pre>
+
+					<pre><code data-trim data-noescape class="css">
+						.menu {
+							display: block;
+							float: something;
+						}
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Components to the rescue!</h2>
+
+					<pre><code data-trim data-noescape class="jsx">
+class HelloWorld extends React.Component {
+	hello() {
+		console.log('Hello!')
+	}
+
+	render() {
+		const styles = {fontSize: '1em'}
+		return &lt;h1 style={style} onClick={this.hello}&gt;Hello, {this.props.name}&lt;h1&gt;;
+	}
+}
+          </code></pre>
+          
+          <pre><code data-trim data-noescape class="jsx">
+            &lt;HellowWorld/&gt;
+          </code></pre>
+        </section>
+        
+        <section>
+          <h2>I have components,<br> now what?</h2>
+          <ul>
+            <li>Buttons, dropdowns, menus etc.</li>
+            <li>Can be shared.</li>
+            <li>They're all written in {insert favourite framework here}</li>
+            <li>A new project starts with {insert your least favourite framework here}</li>
+          </ul>
+        </section>
+
 				<section>
 					<h2>Web Components</h2>
 					<ul>
@@ -138,7 +202,6 @@ window.customElements.define('my-component', MyComponent);
 					<ul>
 						<li><b>High-performance Rendering</b>: async rendering system, similar to React Fiber</li>
 						<li><b>JSX</b>: Popular and familiar markup system pioneered by React</li>
-						<li><b>Server Side Rendering</b>: Hydrate pre-compiled components on the server without a headless browser</li>
 					</ul>
 				</section>
 				<section>
@@ -152,60 +215,85 @@ window.customElements.define('my-component', MyComponent);
 						<li><b>@Element()</b>: grab the DOM element for this component</li>
 					</ul>
 				</section>
+        
+        <section>
+          <h2>Consuming Stencil</h2>
+
+          <pre><code data-trim data-noescape class="typescript">
+            import { applyPolyfills, defineCustomElements } from 'my-components/loader';
+
+            applyPolyfills().then(() => {
+              defineCustomElements(window);
+            });
+          </code></pre>
+
+          <p>Tell the framework to ignore errors from certain elements</p>
+
+          <p>That's it (ish)!</p>
+        </section>
+
+        <section>
+          <h2>Web component quirks</h2>
+        
+          <ul>
+            <li>Angular: Just works</li>
+            <li>React: Needs thin wrapper to update arrays and objects.</li>
+            <li>Vue: All good</li>
+            <li>Ember: All good</li>
+            <li>HTML/JS: Of course</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>DS Plugin</h2>
+          <ul>
+            <li>Angular: Types and adds ngModel support</li>
+            <li>React: Thin wrapper to update arrays and objects</li>
+          </ul>
+          
+          <p>Now it's like using native React/Angular components.</p>
+        </section>
+
+        <section>
+          <h2>Browser support</h2>
+          <img src="img/browser-support.png" alt="">
+        </section>
+
+        <section>
+          <h2>BuildingConnect: Dumbledore</h2>
+          <img src="img/dumbledore-editor.png" alt="">
+        </section>
+        
+        <section>
+          <h2>GiC</h2>
+          <ul>
+            <li>BuildingConnect: Angular and React</li>
+            <li>iGrid: PHP</li>
+            <li>GiM: React</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>DSM</h2>
+          <ul>
+            <li>New set of components</li>
+            <li>Shared across all teams</li>
+            <li>Explore Stencil</li>
+          </ul>
+        </section>
+        
+       
 				<section>
-					<h2>Demo time</h2>
-					<p>
-						May the demo gods be with us
-					</p>
-				</section>
-				<section>
-					<h2>How is Stencil different from X?</h2>
-					<ul>
-						<li><b>Angular/React/Vue/etc.</b>: Stencil builds standards-based web components that run natively in the browser.</li>
-						<li><b>Polymer</b>: Stencil works primarily at build rather than runtime. Outputs vanilla web components. Opinionated around JSX, Virtual DOM, and other framework features.</li>
-						<li><b>Vanilla Web Components</b>: Stencil provides complicated framework features as if you wrote them yourself in vanilla Web Components.</li>
-					</ul>
-				</section>
-				<section>
-					<h2>Getting Started</h2>
-					<pre><code data-trim data-noescape class="bash">
-						git clone https://github.com/ionic-team/stencil-starter.git my-app
-						cd my-app
-						npm install
-						npm start
-					</code></pre>
-				</section>
-				<section>
-					<h2>Where to go next?</h2>
-					<ul>
-						<li><a target="_blank" href="https://stenciljs.com/docs/my-first-component">Component Basics</a></li>
-						<li><a target="_blank" href="https://stenciljs.com/docs/templating">How Templating/JSX Works</a></li>
-						<li><a target="_blank" href="https://stenciljs.com/docs/decorators">Using Stencil's API</a></li>
-						<li><a target="_blank" href="https://stenciljs.com/docs/events">Sending and listening for Events</a></li>
-						<li><a target="_blank" href="https://stenciljs.com/docs/component-lifecycle">Component Lifecycle Hooks</a></li>
-						<li><a target="_blank" href="https://stenciljs.com/docs/stencil-config">Configuring Stencil Component Collections</a></li>
-					</ul>
-				</section>
-				<section>
-					<h2>Watch the Announcement</h2>
-					<iframe width="560" height="315" src="https://www.youtube.com/embed/UfD-k7aHkQE" frameborder="0" allowfullscreen></iframe>
-				</section>
-				<section>
-					<h2>Community Resources</h2>
-					<ul>
-						<li><a target="_blank" href="https://github.com/ospatil/ng-components-integration">Using a Stencil-built component in Angular</a></li>
-						<li><a target="_blank" href="https://coryrylan.com/blog/create-your-first-web-component-with-stencil-js">Create your First Stencil Component</a></li>
-						<li><a target="_blank" href="https://alligator.io/stencil/getting-started/">Getting Started With Stencil</a></li>
-						<li><a target="_blank" href="https://medium.com/@sinedied/stencil-js-its-finally-time-for-vanilla-web-components-927d26b573e1">Stencil.js: It's finally time for vanilla web components!</a></li>
-					</ul>
-			</section>
-				<section>
-					<h2>Thanks!</h2>
+          <h2>Links</h2>
 					<ul>
 						<li><a href="http://stenciljs.com/">StencilJS.com</a></li>
 						<li><a href="https://twitter.com/stenciljs">@StencilJS on Twitter</a></li>
 						<li><a href="https://github.com/ionic-team/stencil">github.com/ionic-team/stencil</a></li>
 					</ul>
+        </section>
+        
+        <section>
+					<h2>Thanks!</h2>
 				</section>
 			</div>
 		</div>
