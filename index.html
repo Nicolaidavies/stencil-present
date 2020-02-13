@@ -51,7 +51,7 @@
 
 				<!-- Origin of web components -->
 				<section>
-					<h2>Why do we need web components?</h2>
+					<h2>Why do we need components?</h2>
 
 					<pre><code data-trim data-noescape class="html">
 						&lt;div class="menu"&gt;
@@ -60,19 +60,18 @@
 							&lt;div class="menu-item"&gt;Item 3&lt;/div&gt;
 							&lt;div class="menu-item"&gt;Item 4&lt;/div&gt;
 						&lt;/div&gt;
-					</code></pre>
+						&lt;script&gt;
+							document.querySelector('menu-item').addEventListener('click', function() {
+								...
+							})
+						&lt;/script&gt;
 
-					<pre><code data-trim data-noescape class="javascript">
-						document.querySelector('menu-item').addEventListener('click', function() {
-							...
-						})
-					</code></pre>
-
-					<pre><code data-trim data-noescape class="css">
-						.menu {
-							display: block;
-							float: something;
-						}
+						&lt;style&gt;
+							.menu {
+								display: block;
+								float: something;
+							}
+						&lt;/style&gt;
 					</code></pre>
 				</section>
 
@@ -93,7 +92,7 @@ class HelloWorld extends React.Component {
           </code></pre>
           
           <pre><code data-trim data-noescape class="jsx">
-            &lt;HellowWorld/&gt;
+            &lt;HelloWorld/&gt;
           </code></pre>
         </section>
         
@@ -102,19 +101,19 @@ class HelloWorld extends React.Component {
           <ul>
             <li>Buttons, dropdowns, menus etc.</li>
             <li>Can be shared.</li>
-            <li>They're all written in {insert favourite framework here}</li>
-            <li>A new project starts with {insert your least favourite framework here}</li>
+            <li class="fragment">They're all written in {insert favourite framework here}</li>
+            <li class="fragment">A new project starts using {insert your least favourite framework here}</li>
           </ul>
         </section>
 
 				<section>
 					<h2>Web Components</h2>
 					<ul>
-						<li>Natively-supported, standardized JavaScript components</li>
-						<li>Run in every framework or on their own</li>
-						<li>Answer to the shared-component problem</li>
-						<li>Powered by the Custom Element spec</li>
-						<li>Native browser support: Chrome, Safari, good polyfills</li>
+						<li class="fragment">Natively-supported, standardized JavaScript components</li>
+						<li class="fragment">Run in every framework or on their own</li>
+						<li class="fragment">Answer to the shared-component problem</li>
+						<li class="fragment">Powered by the Custom Element spec</li>
+						<li class="fragment">Native browser support: Chrome, Safari, good polyfills</li>
 					</ul>
 				</section>
 				<section>
@@ -126,13 +125,20 @@ class HelloWorld extends React.Component {
 				<section>
 					<h2>Custom Element Example</h2>
 					<pre><code data-trim data-noescape class="typescript">
+const template = document.createElement('template');
+template.innerHTML = `
+&lt;div&gt; ... &lt;/div&gt;
+`;
+
 class MyComponent extends HTMLElement {
-	constructor() {
-		// Standard DOM/fetch/etc. code...
-	}
-	connectedCallback() {}
-	disconnectedCallback() {}
-	attributeChangedCallback() {}
+  constructor() {
+    this._shadowRoot = this.attachShadow({ 'mode': 'open' });
+    this._shadowRoot.appendChild(template.content.cloneNode(true));
+    const container = this._shadowRoot.querySelector('div');
+  }
+  connectedCallback() {}
+  disconnectedCallback() {}
+  attributeChangedCallback() {}
 }
 
 window.customElements.define('my-component', MyComponent);
@@ -141,9 +147,9 @@ window.customElements.define('my-component', MyComponent);
 				<section>
 					<h2>Can we make it easier to build Custom Elements?</h2>
 					<ul>
-						<li>Still want framework features</li>
-						<li>Desire to manage bundles of components</li>
-						<li>Many teams are choosing TypeScript</li>
+						<li class="fragment">Still want framework features</li>
+						<li class="fragment">Desire to manage bundles of components</li>
+						<li class="fragment">TypeScript?</li>
 					</ul>
 				</section>
 				<section>
@@ -152,19 +158,18 @@ window.customElements.define('my-component', MyComponent);
 				<section>
 					<h2>What is Stencil?</h2>
 					<ul>
-						<li>A compiler that generates Custom Elements, part of the Web Components spec</li>
-						<li>Not a framework: output is 100% standards-compliant Custom Elements</li>
-						<li>Adds powerful framework features to Web Components</li>
-						<li>Created and used heavily by the <a href="http://ionicframework.com/">Ionic Framework</a> team. Ionic 4+ is built on it!</li>
+						<li class="fragment">A compiler that generates Custom Elements, part of the Web Components spec</li>
+						<li class="fragment">Not a framework: output is 100% standards-compliant Custom Elements</li>
+						<li class="fragment">Adds powerful framework features to Web Components</li>
+						<li class="fragment">Created and used heavily by the <a href="http://ionicframework.com/">Ionic Framework</a> team. Ionic 4+ is built on it!</li>
 					</ul>
 				</section>
 				<section>
 					<h2>Why Stencil?</h2>
 					<ul>
-						<li><b>Performance</b>: Traditional frameworks proving too heavy for demanding mobile Progressive Web Applications</li>
-						<li><b>Stability</b>: Desire to use web standards and avoid constant framework churn</li>
-						<li><b>Interoperability</b>: Ability to create components that work across all major frameworks.</li>
-						<li><b>Familiarity</b>: features from frameworks but in a leaner, standards-compliant package</li>
+						<li class="fragment"><b>Stability</b>: Desire to use web standards and avoid constant framework churn</li>
+						<li class="fragment"><b>Interoperability</b>: Ability to create components that work across all major frameworks.</li>
+						<li class="fragment"><b>Familiarity</b>: features from frameworks but in a leaner, standards-compliant package</li>
 					</ul>
 				</section>
 				<section>
@@ -192,9 +197,9 @@ window.customElements.define('my-component', MyComponent);
 				<section>
 					<h2>Stencil-compiled Components have</h2>
 					<ul>
-						<li><b>Virtual DOM</b>: fast DOM updates without common DOM performance pitfalls</li>
-						<li><b>Lazy Loading</b>: By default components load asyncronously and can be bundled with related components</li>
-						<li><b>Reactivity</b>: Efficient updates based on property and state changes</li>
+						<li class="fragment"><b>Virtual DOM</b>: fast DOM updates without common DOM performance pitfalls</li>
+						<li class="fragment"><b>Lazy Loading</b>: By default components load asyncronously and can be bundled with related components</li>
+						<li class="fragment"><b>Reactivity</b>: Efficient updates based on property and state changes</li>
 					</ul>
 				</section>
 				<section>
@@ -207,19 +212,19 @@ window.customElements.define('my-component', MyComponent);
 				<section>
 					<h2>Stencil API</h2>
 					<ul>
-						<li><b>@Component()</b>: set tag name and associated stylesheet (Sass or plain CSS)</li>
-						<li><b>@Prop()</b>: Create a property on the component</li>
-						<li><b>@State()</b>: local state that should be watched during change detection</li>
-						<li><b>@Event()</b>: Trigger events on a component</li>
-						<li><b>@Listen()</b>: listen for events fired from children</li>
-						<li><b>@Element()</b>: grab the DOM element for this component</li>
+						<li class="fragment"><b>@Component()</b>: set tag name and associated stylesheet (Sass or plain CSS)</li>
+						<li class="fragment"><b>@Prop()</b>: Create a property on the component</li>
+						<li class="fragment"><b>@State()</b>: local state that should be watched during change detection</li>
+						<li class="fragment"><b>@Event()</b>: Trigger events on a component</li>
+						<li class="fragment"><b>@Listen()</b>: listen for events fired from children</li>
+						<li class="fragment"><b>@Element()</b>: grab the DOM element for this component</li>
 					</ul>
 				</section>
         
         <section>
           <h2>Consuming Stencil</h2>
 
-          <pre><code data-trim data-noescape class="typescript">
+          <pre class="fragment"><code data-trim data-noescape class="typescript">
             import { applyPolyfills, defineCustomElements } from 'my-components/loader';
 
             applyPolyfills().then(() => {
@@ -227,28 +232,28 @@ window.customElements.define('my-component', MyComponent);
             });
           </code></pre>
 
-          <p>Tell the framework to ignore errors from certain elements</p>
+          <p class="fragment">Tell the framework to ignore errors from certain elements</p>
 
-          <p>That's it (ish)!</p>
+          <p> <span class="fragment">That's it</span> <span class="fragment">(ish)</span> </p>
         </section>
 
         <section>
           <h2>Web component quirks</h2>
         
           <ul>
-            <li>Angular: Just works</li>
-            <li>React: Needs thin wrapper to update arrays and objects.</li>
-            <li>Vue: All good</li>
-            <li>Ember: All good</li>
-            <li>HTML/JS: Of course</li>
+            <li class="fragment">Angular: Works, but type support could be better</li>
+            <li class="fragment">React: Needs thin wrapper to update arrays and objects.</li>
+            <li class="fragment">Vue: All good</li>
+            <li class="fragment">Ember: All good</li>
+            <li class="fragment">HTML/JS: Of course</li>
           </ul>
         </section>
 
         <section>
           <h2>DS Plugin</h2>
           <ul>
-            <li>Angular: Types and adds ngModel support</li>
-            <li>React: Thin wrapper to update arrays and objects</li>
+            <li class="fragment">Angular: Types and adds ngModel support</li>
+            <li class="fragment">React: Thin wrapper to update arrays and objects</li>
           </ul>
           
           <p>Now it's like using native React/Angular components.</p>
@@ -263,22 +268,28 @@ window.customElements.define('my-component', MyComponent);
           <h2>BuildingConnect: Dumbledore</h2>
           <img src="img/dumbledore-editor.png" alt="">
         </section>
+
+        <section>
+          <h2>BuildingConnect: Dumbledore</h2>
+          <img src="img/dumbledore-viewer.png" alt="">
+        </section>
         
         <section>
           <h2>GiC</h2>
           <ul>
-            <li>BuildingConnect: Angular and React</li>
-            <li>iGrid: PHP</li>
-            <li>GiM: React</li>
+            <li class="fragment">BuildingConnect: Angular and React</li>
+            <li class="fragment">iGrid: PHP</li>
+            <li class="fragment">GiM: React</li>
+            <li class="fragment">Future projects?</li>
           </ul>
         </section>
 
         <section>
           <h2>DSM</h2>
           <ul>
-            <li>New set of components</li>
-            <li>Shared across all teams</li>
-            <li>Explore Stencil</li>
+            <li class="fragment">New set of components</li>
+            <li class="fragment">Shared across all teams</li>
+            <li class="fragment">Explore Stencil</li>
           </ul>
         </section>
         
@@ -289,11 +300,12 @@ window.customElements.define('my-component', MyComponent);
 						<li><a href="http://stenciljs.com/">StencilJS.com</a></li>
 						<li><a href="https://twitter.com/stenciljs">@StencilJS on Twitter</a></li>
 						<li><a href="https://github.com/ionic-team/stencil">github.com/ionic-team/stencil</a></li>
+						<li><a href="https://ionicframework.com/">IonicFramework.com</a></li>
 					</ul>
         </section>
         
         <section>
-					<h2>Thanks!</h2>
+					<h2>Thank you!</h2>
 				</section>
 			</div>
 		</div>
